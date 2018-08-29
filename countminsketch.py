@@ -10,16 +10,16 @@ import mmh3
 class CountMinSketch(object):
     ''' Class for a CountMinSketch data structure
     '''
-    def __init__(self, width, depth, seed):
+    def __init__(self, width, depth, seeds):
         ''' Method to initialize the data structure
         @param width int: Width of the table
         @param depth int: Depth of the table (num of hash func)
-        @param seeds int: Random seed
+        @param seeds list: Random seed list
         '''
         self.width = width
         self.depth = depth
         self.table = np.zeros([depth, width])  # Create empty table
-        self.seed = seed # np.random.randint(w, size = d) // create some seeds
+        self.seed = seeds # np.random.randint(w, size = d) // create some seeds
 
     def increment(self, key):
         ''' Method to add a key to the CMS
@@ -38,7 +38,6 @@ class CountMinSketch(object):
             index = mmh3.hash(key, self.seed[i]) % self.width
             if self.table[i, index] < min_est:
                 min_est = self.table[i, index]
-
         return min_est
 
     def merge(self, new_cms):
